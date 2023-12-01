@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 mongoose
-  .connect('mongodb://localhost/videogames', { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect('mongodb://localhost/videogames',)
   .then(() => console.log('Connected to mongodb'))
   .catch(error => console.log("Couldn't connect to mongodb", error));
 
