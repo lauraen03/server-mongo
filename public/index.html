@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Video Games</title>
+</head>
+<body>
+  <h1>Video Games</h1>
+  <button id="addItemBtn" onclick="toggleForm()">Add Video Game</button>
+  <div id="addItemForm">
+    <h2>Add a Video Game</h2>
+    <label for="title">Title:</label>
+    <input type="text" id="title" required><br>
+    <label for="genre">Genre:</label>
+    <input type="text" id="genre" required><br>
+    <label for="releaseYear">Release Year:</label>
+    <input type="number" id="releaseYear" required><br>
+    <label for="platform">Platform:</label>
+    <input type="text" id="platform" required><br>
+    <label for="characters">Characters (comma-separated):</label>
+    <input type="text" id="characters" required><br>
+    <label for="imageUrl">Image URL:</label>
+    <input type="text" id="imageUrl" required><br>
+    <button id="submitBtn" onclick="addItem()">Submit</button>
+   
+<label for="image">Image:</label>
+<input type="file" id="image" accept="image/*">
+
+
+
+  </div>
+  <div id="app"></div>
+  <div id="message"></div>
+  <script src="script.js"></script>
+</body>
+</html>
