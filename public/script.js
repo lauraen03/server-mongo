@@ -22,7 +22,7 @@ function displayData(data) {
     itemDiv.className = 'item';
 
     itemDiv.innerHTML = `
-      <img src="${item.imageUrl}" alt="${item.title}" />
+      <img src="${item.imagePath}" alt="${item.title}" />
       <h2>${item.title}</h2>
       <p>${item.genre}</p>
       <p>${item.releaseYear}</p>
@@ -33,8 +33,8 @@ function displayData(data) {
       </p>
       <p>Description: ${item.description}</p>
       <a href="${item.trailerUrl}" target="_blank">Watch Trailer</a>
-      <button class="edit-btn" onclick="editItem(${item.id})">Edit</button>
-      <button class="delete-btn" onclick="deleteItem(${item.id})">Delete</button>
+      <button class="edit-btn" onclick="editItem('${item._id}')">Edit</button>
+      <button class="delete-btn" onclick="deleteItem('${item._id}')">Delete</button>
     `;
 
     appDiv.appendChild(itemDiv);
@@ -48,18 +48,14 @@ function showCharacterImages(game, characters) {
   const modal = document.createElement('div');
   modal.className = 'modal';
 
-
   const closeButton = document.createElement('span');
   closeButton.className = 'close-button';
   closeButton.innerHTML = '&times;';
 
-
   modal.appendChild(closeButton);
-
 
   const characterImagesContainer = document.createElement('div');
   characterImagesContainer.className = 'character-images-container';
-
 
   characters.forEach(character => {
     const characterImage = document.createElement('img');
@@ -68,16 +64,13 @@ function showCharacterImages(game, characters) {
     characterImagesContainer.appendChild(characterImage);
   });
 
-
   modal.appendChild(characterImagesContainer);
   document.body.appendChild(modal);
-
 
   closeButton.addEventListener('click', () => {
     document.body.removeChild(modal);
   });
 }
-
 
 function getCharacterImageUrl(game, character) {
   const characterImages = {
@@ -107,20 +100,15 @@ function getCharacterImageUrl(game, character) {
     },
   };
 
-
   const imageUrl = characterImages[game]?.[character];
-
 
   if (!imageUrl) {
     console.error(`Image not found for ${character} in ${game}`);
     return 'default.jpg';
   }
 
-
   return imageUrl;
 }
-
-
 
 function toggleForm() {
   const form = document.getElementById('addItemForm');
@@ -162,26 +150,44 @@ async function addItem() {
 }
 
 async function editItem(id) {
-  const newData = prompt('Enter new data:');
-  if (newData !== null) {
+  const newTitle = prompt('Enter new title:');
+  const newGenre = prompt('Enter new genre:');
+  const newReleaseYear = prompt('Enter new release year:');
+  const newPlatform = prompt('Enter new platform:');
+  const newCharacters = prompt('Enter new characters (comma-separated):').split(',').map(char => char.trim());
+  const newDescription = prompt('Enter new description:');
+  const newTrailerUrl = prompt('Enter new trailer URL:');
+
+  const newData = {
+    title: newTitle,
+    genre: newGenre,
+    releaseYear: newReleaseYear,
+    platform: newPlatform,
+    characters: newCharacters,
+    description: newDescription,
+    trailerUrl: newTrailerUrl,
+  };
+
+  if (newTitle !== null && newGenre !== null && newReleaseYear !== null && newPlatform !== null) {
     try {
       const response = await fetch(`/api/edit-item/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ newData }),
+        body: JSON.stringify(newData),
       });
 
       const result = await response.text();
       displayMessage(result);
-      fetchData(); // Refresh the data after editing
+      fetchData();
     } catch (error) {
       console.error('Error editing item:', error);
       displayMessage('Error editing item');
     }
   }
 }
+
 
 async function deleteItem(id) {
   const isSure = confirm('Are you sure you want to delete this item?');
@@ -191,16 +197,20 @@ async function deleteItem(id) {
         method: 'DELETE',
       });
 
-      const result = await response.text();
-      displayMessage(result);
-      fetchData(); // Refresh the data after deleting
+      if (response.ok) {
+        const result = await response.json(); 
+        displayMessage(result);
+        fetchData();
+      } else {
+        console.error('Error deleting item:', response.statusText);
+        displayMessage('Error deleting item');
+      }
     } catch (error) {
       console.error('Error deleting item:', error);
       displayMessage('Error deleting item');
     }
   }
 }
-
 
 
 function displayMessage(message) {
