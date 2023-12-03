@@ -13,7 +13,7 @@ app.use(express.json());
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 mongoose
-  .connect("mongodb+srv://lauran9263:Katielaura@videogames.gecfl4q.mongodb.net/")
+  .connect('mongodb://localhost/videogames', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to mongodb'))
   .catch(error => console.log("Couldn't connect to mongodb", error));
 
