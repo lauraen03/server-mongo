@@ -121,7 +121,8 @@ async function addItem() {
   const releaseYear = document.getElementById('releaseYear').value;
   const platform = document.getElementById('platform').value;
   const characters = document.getElementById('characters').value.split(',').map(char => char.trim());
-  const imageUrl = document.getElementById('imageUrl').value;
+  const description = document.getElementById('description').value; // Add this line
+  const trailerUrl = document.getElementById('trailerUrl').value;
 
   try {
     const response = await fetch('/api/add-item', {
@@ -135,7 +136,8 @@ async function addItem() {
         releaseYear,
         platform,
         characters,
-        imageUrl,
+        description, // Add this line
+        trailerUrl,
       }),
     });
 
@@ -148,6 +150,9 @@ async function addItem() {
     console.error('Error adding item:', error);
   }
 }
+
+
+
 
 async function editItem(id) {
   const newTitle = prompt('Enter new title:');

@@ -13,7 +13,7 @@ app.use(express.json());
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 mongoose
-  .connect('mongodb://localhost/videogames', { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect("mongodb+srv://lauran9263:Katielaura@videogames.gecfl4q.mongodb.net/")
   .then(() => console.log('Connected to mongodb'))
   .catch(error => console.log("Couldn't connect to mongodb", error));
 
@@ -106,8 +106,6 @@ app.delete('/api/delete-item/:id', async (req, res) => {
     res.status(400).send('Error deleting item');
   }
 });
-
-
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
